@@ -1,0 +1,8 @@
+
+.PHONY: all
+all:
+	@echo "nothing for all ; use help"
+
+
+kernel:
+	make -f makeKernel $^ 

@@ -1,0 +1,78 @@
+
+kerHome?=/proj/theKernel/kernelSRC
+kerSrc?=$(kerHome)/gitNext/linux-next
+buildFolder?=$(kerSrc)/kernelBuildFiles
+output?=$(kerSrc)/output
+modules?=$(output)/modules
+myConfig?=$(output)/myConfig
+
+####################################################################################
+.PHONY: all
+all:
+	@echo "nothing for all ; use help"
+####################################################################################
+vars:
+	@echo "kerHome = $(kerHome)"
+	@echo "kerSrc = $(kerSrc)"
+	@echo "buildFolder = ${buildFolder}"
+	@echo "output = $(output)"
+	@echo "myConfig = $(myConfig)"
+
+####################################################################################
+help:
+	@echo "kernel build help"
+	@echo "calling optins:"
+	@echo " make help  - show this menu"
+	@echo " make vars  - show varibels value"
+	@echo " make menuconfig  - menuconfig"
+	@echo " make clean  - clean"
+	@echo " make defconfig_x86  - defconfig"
+	@echo " make build  - build"
+	@echo " make modules  - build and install modules to output folder"
+	@echo " make ouput  - copy build results and config to output folder"
+
+
+
+src:
+	@echo "kernel src update:"
+	@echo "git clone https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git"
+	@echo "cd linux-next"
+	@echo "git checkout master"
+	@echo "git fetch origin"
+	@echo "git reset --hard remotes/origin/master"
+
+
+####################################################################################
+menuconfig: buildFolders
+	@make -C $(kerSrc) ARCH=x86_64 menuconfig KCONFIG_CONFIG=$(myConfig)
+
+clean:
+	make -C $(kerSrc) O=$(buildFolder) clean
+	make -C $(kerSrc) O=$(buildFolder) mrproper
+	rm $(myConfig)
+
+buildFolders:
+	@mkdir -p $(buildFolder)
+	@mkdir -p $(output)
+
+
+defconfig_x86: buildFolders
+	make -C $(kerSrc) O=$(buildFolder) ARCH=x86_64 x86_64_defconfig
+	@cp $(buildFolder)/.config $(myConfig)
+
+build:	buildFolders
+	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 -j 4 bzImage
+	$(MAKE) cpout
+
+modules: buildFolders
+	#make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 modules_prepare
+	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 -j 4 modules
+	## INSTALL_MOD_PATH - /lib/modules/$(KERNELRELEASE)/kernel/
+	## INSTALL_MOD_DIR  - /lib/modules/$(KERNELRELEASE)/extra/
+	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 \
+		INSTALL_MOD_PATH=$(modules)  INSTALL_MOD_DIR=$(modules) -j 4 modules_install
+	
+
+
+cpout:  
+	@cp $(buildFolder)/arch/x86/boot/bzImage  $(output)/
