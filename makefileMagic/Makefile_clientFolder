@@ -1,8 +1,52 @@
+#!/bin/bash
 
+#################################################################################
+########   export varible to used in makefile   #################################
+export wrkdir=$(shell pwd)
+export kerMake=/proj/theKernel/kernelSRC
+export buildFolder=$(wrkdir)/kernelBuildFiles
+export output=$(wrkdir)/output
+export myConfig=$(output)/myKernelConfig
+
+##make options
+mkopt=--no-print-directory -C
+
+#################################################################################
 .PHONY: all
 all:
 	@echo "nothing for all ; use help"
 
+#################################################################################
+help:
+	@make $(mkopt) $(kerMake) help
+#################################################################################
+vars:
+	@echo "wrkdir = $(wrkdir)"
+	@make $(mkopt) $(kerMake) vars
+#################################################################################
+menuconfig:
+	@make $(mkopt) $(kerMake) menuconfig
+#################################################################################
+defconfig_x86:
+	@make $(mkopt) $(kerMake) defconfig_x86
+#################################################################################
+src:
+	@make $(mkopt) $(kerMake) src
+#################################################################################
+clean:
+	@make $(mkopt) $(kerMake) clean
+#################################################################################
+build:
+	@make $(mkopt) $(kerMake) build
+#################################################################################
+rebuild:
+	@make $(mkopt) $(kerMake) rebuild
+#################################################################################
+modules:
+	@make $(mkopt) $(kerMake) modules
+#################################################################################
+cpout:
+	@make $(mkopt) $(kerMake) cpout
+#################################################################################
 
-kernel:
-	make -f makeKernel $^ 
+

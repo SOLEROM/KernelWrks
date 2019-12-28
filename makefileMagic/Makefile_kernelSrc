@@ -23,11 +23,15 @@ help:
 	@echo "kernel build help"
 	@echo "calling optins:"
 	@echo " make help  - show this menu"
+	@echo " make update  - reset and update master git branch"
+	@echo " make deps  - check and install deps list"
 	@echo " make vars  - show varibels value"
 	@echo " make menuconfig  - menuconfig"
 	@echo " make clean  - clean"
+	@echo " make cleanall  - clean + rm output results and configs"
 	@echo " make defconfig_x86  - defconfig"
 	@echo " make build  - build"
+	@echo " make rebuild  - build + modules again"
 	@echo " make modules  - build and install modules to output folder"
 	@echo " make ouput  - copy build results and config to output folder"
 
@@ -44,12 +48,33 @@ src:
 
 ####################################################################################
 menuconfig: buildFolders
-	@make -C $(kerSrc) ARCH=x86_64 menuconfig KCONFIG_CONFIG=$(myConfig)
+	@make -C $(kerSrc) O=$(buildFolder) ARCH=x86_64 menuconfig KCONFIG_CONFIG=$(myConfig)
 
 clean:
-	make -C $(kerSrc) O=$(buildFolder) clean
-	make -C $(kerSrc) O=$(buildFolder) mrproper
+	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) clean
+	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) mrproper
+
+cleanall:
+	$(MAKE) clean
 	rm $(myConfig)
+	rm $(output)/bzImage
+	rm -rf $(modules)
+	rm -rf ${buildFolder}/*
+
+deps:
+	## repo deps to build kernel
+	sudo apt-get install libncurses5-dev
+	sudo apt-get install flex bison
+	sudo apt-get install chrpath gawk texinfo libsdl1.2-dev whiptail diffstat cpio libssl-dev
+	sudo apt-get install libelf-dev	
+
+update:
+	cd $(kerSrc)
+	git checkout master
+	git fetch origin
+	git reset --hard remotes/origin/master
+	git update
+
 
 buildFolders:
 	@mkdir -p $(buildFolder)
@@ -57,12 +82,16 @@ buildFolders:
 
 
 defconfig_x86: buildFolders
-	make -C $(kerSrc) O=$(buildFolder) ARCH=x86_64 x86_64_defconfig
-	@cp $(buildFolder)/.config $(myConfig)
+	make -C $(kerSrc) O=$(buildFolder) ARCH=x86_64 KCONFIG_CONFIG=$(myConfig)  x86_64_defconfig
 
 build:	buildFolders
-	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 -j 4 bzImage
+	#make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 -j 4 bzImage
+	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 -j 4
 	$(MAKE) cpout
+
+rebuild:
+	$(MAKE) build
+	$(MAKE) modules
 
 modules: buildFolders
 	#make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 modules_prepare
