@@ -90,3 +90,28 @@ Breakpoint 1, start_kernel () at /proj/theKernel/kernelSRC/gitNext/linux-next/in
 (gdb) 
 
 ```
+
+
+## automation
+
+* (1) run qemu
+* (2) run gdb script
+
+```
+
+## script:
+gdb --command=./gdb1.commands kernelBuildFiles/vmlinux
+
+
+gdb1.commands 
+================
+#gdb security off (loading from other path enable)
+set auto-load safe-path /
+#connect to qemu
+target remote localhost:1234
+#break on start
+break start_kernel
+#run
+c
+
+```
