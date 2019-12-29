@@ -9,7 +9,7 @@ export output=$(wrkdir)/output
 export myConfig=$(output)/myKernelConfig
 
 ##make options
-mkopt=--no-print-directory -C
+mkopt=--no-print-directory
 
 #################################################################################
 .PHONY: all
@@ -18,35 +18,38 @@ all:
 
 #################################################################################
 help:
-	@make $(mkopt) $(kerMake) help
+	@make $(mkopt) -C $(kerMake) help
 #################################################################################
 vars:
 	@echo "wrkdir = $(wrkdir)"
-	@make $(mkopt) $(kerMake) vars
+	@make $(mkopt) -C $(kerMake) vars
 #################################################################################
 menuconfig:
-	@make $(mkopt) $(kerMake) menuconfig
+	@make $(mkopt) -C $(kerMake) menuconfig
 #################################################################################
 defconfig_x86:
-	@make $(mkopt) $(kerMake) defconfig_x86
+	@make $(mkopt) -C $(kerMake) defconfig_x86
 #################################################################################
 src:
-	@make $(mkopt) $(kerMake) src
+	@make $(mkopt) -C $(kerMake) src
 #################################################################################
 clean:
-	@make $(mkopt) $(kerMake) clean
+	@make $(mkopt) -C $(kerMake) clean
+#################################################################################
+cleanall:
+	@make $(mkopt) -C $(kerMake) cleanall
 #################################################################################
 build:
-	@make $(mkopt) $(kerMake) build
+	@make $(mkopt) -C $(kerMake) build
 #################################################################################
 rebuild:
-	@make $(mkopt) $(kerMake) rebuild
+	@make $(mkopt) -C $(kerMake) rebuild
 #################################################################################
 modules:
-	@make $(mkopt) $(kerMake) modules
+	@make $(mkopt) -C $(kerMake) modules
 #################################################################################
 cpout:
-	@make $(mkopt) $(kerMake) cpout
+	@make $(mkopt) -C $(kerMake) cpout
 #################################################################################
 
 

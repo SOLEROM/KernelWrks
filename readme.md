@@ -7,6 +7,9 @@
 	* [calling MakeFile With Vars override](makefileMagic/callingMakeFileWithVars.md)
 	* [srcClientService](makefileMagic/srcClientService.md)
 
+## rootfs assistence
+* [rootfs options](rootfs/readme.md)
+	* [buildRoot play](rootfs/buildRoot.md)
 
 ## debugging
 
