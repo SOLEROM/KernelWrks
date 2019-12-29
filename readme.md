@@ -1,5 +1,7 @@
 # Kernel-Wrks :: general kernel works
 
+* practice play and test kernel staff
+
 ## makeFile Magic
 
 * [makefile](makefileMagic/readme.md)
@@ -17,3 +19,7 @@
 	* [kaslr off](debugging/kaslr.md)
 	* [simp-gdb](debugging/gdbSimpDebug.md)
 
+
+## tracing
+* [trace-cmd](traceShark/readme.md)
+	* [simple-1sec-rec](traceShark/example1.md)
