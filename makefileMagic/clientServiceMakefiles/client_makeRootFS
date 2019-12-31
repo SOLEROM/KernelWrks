@@ -3,10 +3,10 @@
 #################################################################################
 ########   export varible to used in makefile   #################################
 export wrkdir=$(shell pwd)
-export kerMake=/proj/theKernel/kernelSRC
-export buildFolder=$(wrkdir)/kernelBuildFiles
+export buildRootMake=/proj/theKernel/kernelRootBuild
+export buildRootFolder=$(wrkdir)/buildRootFiles
 export output=$(wrkdir)/output
-export myConfig=$(output)/myKernelConfig
+export myConfig=$(output)/mybuildRootConfig
 
 ##make options
 mkopt=--no-print-directory
@@ -18,38 +18,34 @@ all:
 
 #################################################################################
 help:
-	@make $(mkopt) -C $(kerMake) help
+	@make $(mkopt) -C $(buildRootMake) help
+	@echo " cpmod - copy build kernel modules to rootfs.ext"
 #################################################################################
 vars:
 	@echo "wrkdir = $(wrkdir)"
-	@make $(mkopt) -C $(kerMake) vars
+	@make $(mkopt) -C $(buildRootMake) vars
 #################################################################################
 menuconfig:
-	@make $(mkopt) -C $(kerMake) menuconfig
+	@make $(mkopt) -C $(buildRootMake) menuconfig
 #################################################################################
-defconfig_x86:
-	@make $(mkopt) -C $(kerMake) defconfig_x86
-#################################################################################
-src:
-	@make $(mkopt) -C $(kerMake) src
+defconfig:
+	@make $(mkopt) -C $(buildRootMake) defconfig
 #################################################################################
 clean:
-	@make $(mkopt) -C $(kerMake) clean
+	@make $(mkopt) -C $(buildRootMake) clean
 #################################################################################
 cleanall:
-	@make $(mkopt) -C $(kerMake) cleanall
+	@make $(mkopt) -C $(buildRootMake) cleanall
 #################################################################################
 build:
-	@make $(mkopt) -C $(kerMake) build
-#################################################################################
-rebuild:
-	@make $(mkopt) -C $(kerMake) rebuild
-#################################################################################
-modules:
-	@make $(mkopt) -C $(kerMake) modules
-#################################################################################
-cpout:
-	@make $(mkopt) -C $(kerMake) cpout
+	@make $(mkopt) -C $(buildRootMake) build
 #################################################################################
 
+##deps on kernel build:
+cpmod:
+	mkdir -p output/rootfs.mount
+	sudo mount output/rootfs.ext4 output/rootfs.mount
+	sudo cp -ar output/modules/lib/modules output/rootfs.mount/lib/ 
+	tree output/rootfs.mount/lib/
+	sudo umount output/rootfs.mount
 

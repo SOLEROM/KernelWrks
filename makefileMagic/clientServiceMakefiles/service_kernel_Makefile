@@ -34,6 +34,7 @@ help:
 	@echo " make rebuild  - build + modules again"
 	@echo " make modules  - build and install modules to output folder"
 	@echo " make ouput  - copy build results and config to output folder"
+	@echo " make outOfTree - build module makefile; run: folder=./YYY module=XXX.c"
 
 
 
@@ -67,6 +68,7 @@ deps:
 	sudo apt-get install flex bison
 	sudo apt-get install chrpath gawk texinfo libsdl1.2-dev whiptail diffstat cpio libssl-dev
 	sudo apt-get install libelf-dev	
+	sudo apt-get install kernelshark
 
 update:
 	cd $(kerSrc)
@@ -101,7 +103,10 @@ modules: buildFolders
 	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 \
 		INSTALL_MOD_PATH=$(modules)  INSTALL_MOD_DIR=$(modules) -j 4 modules_install
 	
-
+outOfTree:
+	#input 1:folder path;2:c-module-name.c
+	#cd to module folder; pass kernelBuild  run genmak to c.module src
+	cd ${modFold} && KROOT=$(buildFolder) $(kerHome)/myGenMake ${module}
 
 cpout:  
 	@cp $(buildFolder)/arch/x86/boot/bzImage  $(output)/
