@@ -1,73 +1,66 @@
 
-DETECT_HUNG_TASK
-CONFIG_DETECT_SOFTLOCKUP
+## general topics
+
+dtb
+KML - Kernel Mode Linux
+dubug during stress
+kerenl src ; cscpoe/ctags
+pcp
+   deamon tool can be remote analys pcp-doc pcp-gui
+kernel src 	scripts
+	    	tools
+Sparce Tool
+[V] doc 
+kernel map
+exported symbols
+Kernel Symbol table
+kernel/hotPlug = load live patch of module to replace some module that is compiled inside
+RT patch
+RunTime-Alternative
+kernel init code
+bootroom/uboot
+moduel signing
+kconfigs
+	export all syms
+	RO
+Adding and stealing system calls
+Patching a kernel
+symmetric Multi Processing
+AMP
+kernel process
+	kernel threads
+	launch user mode process
+Kernel Enforce
 
 
-CONFIG_PRINTK_TIME - add time stamps to dmesg
-CONFIG_DEBUG_KERNEL - turn on kernel debugging
-CONFIG_DETECT_HUNG_TASK - good for figuring out what's causing a kernel freeze
-CONFIG_DEBUG_INFO - ensures you can decode kernel oops symbols
-CONFIG_EARLY_PRINTK
-CONFIG_LOG_BUF_SHIFT=21 - sets the kernel buffer log size to the biggest buffer
-CONFIG_NETCONSOLE=m - compiles netconsole as a module, see tutorial below. 
+## debugging
 
-kernel oops
+Trace TOOLS
+Ftrace
+perf
+crash
+SysCtl
+Sysrq
+objdump ko
+ftrace
+kprobes
+jprobes
+trace system calls
+SystemTAP
+do profile and testing
+sysrq
+dissecting OOPS msg
+use of debuggers
+debugfs
+debug kernel code
+kdgb
+proc
 
-kernel dumps
-
-
-
-console to serial
-if no serial try:
-	Netconsole to See Kernel Messages.
-
-
-
-loglevel=7 without quiet
-
-kernel version open issues
-
-watchdogs
- sw
- hw
-
- The fallow memory's ring buffer is dumped when a watchdog reset is detected on kernel boot.
-
-
-panic=-1
-
- kdump facilities
-
-SLUB/SLAB debug by adding slub_debug=FZPU in my kernel arguments. Then when I run slabinfo -v to validate all my slab,
-
-
-kernel lockup case
-
-lockup watchdogs kernel features
-
-
-
-
-# resons
-
-SDRAM or a peripheral device latches up and causes abnormal bus activity. This will stop the CPU from fetching proper code
-
-
-
-
-Softlockup detector and hardlockup detector
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/lockup-watchdogs.txt
-
-
-
- kexec to boot a special lightweight kernel after a crash to collect a kernel crash dump
-https://web.archive.org/web/20120324053437/http://kerneltrap.org/node/6452
-
-
-
-testHW
-RAM stick has defects  - test ram
-test cpu temp
-test nand flash
+debug
+	loglevels
+	kerenl debug user space procss /taskstuct
+	debug memory spaces
+		memory passing debug
+	init debug
 
 
