@@ -38,36 +38,15 @@ sudo ./buildEnvCont1/enter -r buildEnvCont1/ -p kernelProj1/
 ```
 mounting the kernelProj1/ folder to inner /proj
 [CONT]root@vostro14:~$ ls /proj/
-Makefile  makeKernel  makeRootFS  myGenMake  theKernel
+buildrootSRC  kernelSRC  makeKernel  makeRootFS
 
 ```
 
-## prepare
+## build
 
-* install deps
+* see [buildKernel](../../buildOptions/myKerBuildScripts/buildKernel.md)
+* see [buildRootfs](../../buildOptions/myKerBuildScripts/buildRoot.md)
 
-```
-[CONT]root@vostro14:/proj$ make -f makeKernel deps
-```
+## run
 
-* get the src code
-
-```
-[CONT]root@vostro14:/proj$ make -f makeKernel src
-```
-
-* will print the commands to run to get the code
-
-```
-kernel src update:  (run it to get the code manually)
-=====================================================
-cd kernelSRC
-git clone https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git
-cd linux-next
-git checkout master
-git fetch origin
-git reset --hard remotes/origin/master
-```
-
-
-
+* see [runtests with qemu](../../buildOptions/myKerBuildScripts/runtests/readme.md)

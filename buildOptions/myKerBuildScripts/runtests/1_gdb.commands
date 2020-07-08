@@ -1,0 +1,11 @@
+#gdb security off (loading from other path enable)
+set auto-load safe-path /
+
+#connect to qemu
+target remote localhost:1234
+
+#break on start
+break start_kernel
+
+#run
+c
