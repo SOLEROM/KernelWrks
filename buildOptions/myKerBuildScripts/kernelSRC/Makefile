@@ -1,0 +1,123 @@
+
+wrkdir=$(shell pwd)
+kerHome?=$(wrkdir)
+kerSrc?=$(kerHome)/linux-next
+buildFolder?=$(kerSrc)/kernelBuildFiles
+output?=$(kerSrc)/output
+modules?=$(output)/modules
+myConfig?=$(output)/myConfig
+
+####################################################################################
+.PHONY: all
+all:
+	@echo "nothing for all ; use help"
+####################################################################################
+vars:
+	@echo "kerHome = $(kerHome)"
+	@echo "kerSrc = $(kerSrc)"
+	@echo "buildFolder = ${buildFolder}"
+	@echo "output = $(output)"
+	@echo "myConfig = $(myConfig)"
+
+####################################################################################
+help:
+	@echo "kernel build help"
+	@echo "calling optins:"
+	@echo " make help  - show this menu"
+	@echo " make update  - reset and update master git branch"
+	@echo " make deps  - check and install deps list"
+	@echo " make vars  - show varibels value"
+	@echo " (2)make menuconfig  - menuconfig"
+	@echo " make clean  - clean"
+	@echo " make cleanall  - clean + rm output results and configs"
+	@echo " (1)make defconfig_x86  - defconfig"
+	@echo " (3)make build  - build"
+	@echo " make rebuild  - build + modules again"
+	@echo " (4)make modules  - build and install modules to output folder"
+	@echo " make cpout  - copy build results and config to output folder"
+	@echo " make outOfTree - build module makefile; run: folder=./YYY module=XXX.c"
+	@echo " make docs - build documentaion"
+
+
+
+src:
+	@echo "kernel src update:  (run it to get the code manually)"
+	@echo "====================================================="
+	@echo "cd kernelSRC"
+	@echo "git clone https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git"
+	@echo "cd linux-next"
+	@echo "git checkout master"
+	@echo "git fetch origin"
+	@echo "git reset --hard remotes/origin/master"
+
+
+####################################################################################
+menuconfig: buildFolders
+	@make -C $(kerSrc) O=$(buildFolder) ARCH=x86_64 menuconfig KCONFIG_CONFIG=$(myConfig)
+
+clean:
+	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) clean
+	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) mrproper
+
+cleanall:
+	$(MAKE) clean
+	rm $(myConfig)
+	rm $(output)/bzImage
+	rm -rf $(modules)
+	rm -rf ${buildFolder}/*
+
+deps:
+	## repo deps to build kernel
+	sudo apt-get install libncurses5-dev
+	sudo apt-get install flex bison
+	sudo apt-get install chrpath gawk texinfo libsdl1.2-dev whiptail diffstat cpio libssl-dev
+	sudo apt-get install libelf-dev	
+	sudo apt-get install kernelshark
+	###for docs:
+	sudo apt-get install graphviz dvipng latexmk librsvg2-bin virtualenv texlive-xetex
+
+update:
+	#cd and run in kerSrc:
+	cd $(kerSrc); \
+	git checkout master ;\
+	git fetch origin ;\
+	git reset --hard remotes/origin/master ;\
+	git pull
+
+
+buildFolders:
+	@mkdir -p $(buildFolder)
+	@mkdir -p $(output)
+
+
+defconfig_x86: buildFolders
+	make -C $(kerSrc) O=$(buildFolder) ARCH=x86_64 KCONFIG_CONFIG=$(myConfig)  x86_64_defconfig
+
+build:	buildFolders
+	#make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 -j 4 bzImage
+	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 -j 4
+	$(MAKE) cpout
+
+rebuild:
+	$(MAKE) build
+	$(MAKE) modules
+
+modules: buildFolders
+	#make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 modules_prepare
+	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 -j 4 modules
+	## INSTALL_MOD_PATH - /lib/modules/$(KERNELRELEASE)/kernel/
+	## INSTALL_MOD_DIR  - /lib/modules/$(KERNELRELEASE)/extra/
+	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 \
+		INSTALL_MOD_PATH=$(modules)  INSTALL_MOD_DIR=$(modules) -j 4 modules_install
+	
+outOfTree:
+	#input 1:folder path;2:c-module-name.c
+	#cd to module folder; pass kernelBuild  run genmak to c.module src
+	cd ${modFold} && KROOT=$(buildFolder) $(kerHome)/myGenMake ${module}
+
+cpout:  
+	@cp $(buildFolder)/arch/x86/boot/bzImage  $(output)/
+
+docs:
+	#make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 pdfdocs
+	make -C $(kerSrc) O=$(buildFolder) KCONFIG_CONFIG=$(myConfig) ARCH=x86_64 htmldocs

@@ -1,0 +1,65 @@
+#!/bin/bash
+
+#################################################################################
+########   export varible to used in makefile   #################################
+export wrkdir=$(shell pwd)
+export buildRootMake=$(wrkdir)/buildrootSRC
+export buildRootFolder=$(wrkdir)/buildrootFiles
+export output=$(wrkdir)/output
+export myConfig=$(output)/mybuildRootConfig
+
+##make options
+mkopt=--no-print-directory
+
+#################################################################################
+.PHONY: all
+all:
+	@echo "nothing for all ; use help"
+
+#################################################################################
+help:
+	@make $(mkopt) -C $(buildRootMake) help
+	@echo " cpmod - copy build kernel modules to rootfs.ext"
+#################################################################################
+vars:
+	@echo "wrkdir = $(wrkdir)"
+	@make $(mkopt) -C $(buildRootMake) vars
+#################################################################################
+deps:
+	@make $(mkopt) -C $(buildRootMake) deps
+#################################################################################
+src:
+	@make $(mkopt) -C $(buildRootMake) src
+#################################################################################
+update:
+	@make $(mkopt) -C $(buildRootMake) update
+#################################################################################
+menuconfig:
+	@make $(mkopt) -C $(buildRootMake) menuconfig
+#################################################################################
+defconfig:
+	@make $(mkopt) -C $(buildRootMake) defconfig
+#################################################################################
+clean:
+	@make $(mkopt) -C $(buildRootMake) clean
+#################################################################################
+cleanall:
+	@make $(mkopt) -C $(buildRootMake) cleanall
+#################################################################################
+build:
+	@make $(mkopt) -C $(buildRootMake) build
+#################################################################################
+
+##deps on kernel build:
+cpmod:
+	mkdir -p output/rootfs.mount
+	sudo mount output/rootfs.ext4 output/rootfs.mount
+	sudo cp -ar output/modules/lib/modules output/rootfs.mount/lib/ 
+	tree output/rootfs.mount/lib/
+	sudo umount output/rootfs.mount
+
+
+mountRoot:
+	mkdir -p output/rootfs.mount
+	sudo mount output/rootfs.ext4 output/rootfs.mount
+
