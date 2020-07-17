@@ -1,15 +1,33 @@
-# 
+# about debugFS
 
-
-## build
-
-
-## mount
+* for option addind custom files to debug fs [see here](../../debugging/debugfs/readme.md)
+* its a RAM-based filesystem can be used to output a lot of different debugging information.
+* enabled by:
 
 ```
-ls /sys/kernel/debug/
-# 
+Kernel hacking
+    [*] Debug filesystem
 
+```
+
+* mount
+
+```
+on demnad:
+===========
+mount -t debugfs none /sys/kernel/debug
+
+on boot via /etc/fstab file:
+============================
+debugfs /sys/kernel/debug debugfs 0 0
+
+```
+
+## list
+
+```
+# ls /sys/kernel/debug/
+# 
 # mount -t debugfs none /sys/kernel/debug/
 # ls /sys/kernel/debug/
 acpi                dri                 sleep_time

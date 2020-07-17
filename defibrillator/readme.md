@@ -24,10 +24,14 @@ A defibrillator is a device that gives a high energy electric shock to the heart
    * [increase dmesgBuff size](logLevels/dmesgBuff.md)
 * [userSpaceLogger](userlog/readme.md)
    * [report remote](userlog/rsyslogRemote.md)
-* []()
+* [kernelPeriodocMsg](timers/periodicTimer.md)
 * []()
 * []()
 
+## kernelConf
+* [kernel config for debug method](kerConf/readme.md)
+* [hakingMenu](kerConf/hakingMenu.md)
+* [timeKeeping](kerConf/timekeeping.md)
 
 
 
@@ -35,4 +39,14 @@ A defibrillator is a device that gives a high energy electric shock to the heart
 * in case no serail on procution board is monitored
 	* [set the uboot to use netconsole reports](uboot/netconsole.md)
 * [make uboot to pass reset cause to user space](uboot/saveRebootCause.md)
+
+
+## hw bus 
+
+* [usbBus](usb/readme.md)
+  * [autosuspend](usb/autosusped.md)
+  * [usb debug method](usb/debugging.md)
+  * [usbmon](usb/usbmon.md)
+
+
 
