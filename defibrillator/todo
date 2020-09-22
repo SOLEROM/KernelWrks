@@ -1,0 +1,4 @@
+
+panic to debug
+
+any non-critical error like kernel oops can be converted into a kernel panic using the kernel sysctl panic_on_oops or with the kernel boot parameter oops=panic. There is also a panic_on_warn parameter to trigger a panic when the kernel executes the WARN() macro.

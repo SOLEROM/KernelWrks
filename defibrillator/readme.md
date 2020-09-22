@@ -8,27 +8,33 @@ A defibrillator is a device that gives a high energy electric shock to the heart
 
 * project to summarize the method to move production system to monitor and debug bsp realted crashes;
 
+## fault types 
+* System crash
+* System hangs
+* System Lockups
+
 ## playEnv
 
 * [buildPlayEnv](playEnv/readme.md)
 
 
 ## hw support devices
-* [hwEq](hwEq/readme.md)
+* use [hwEq](hwEq/readme.md)
 
-## methods
+## first line methods
 
-* [debugFS](debugFS/readme.md)
-* [LogLevel](logLevels/readme.md)
+* [check Limits](limits/readme.md)
+* [monitor debugFS](debugFS/readme.md)
+* [update LogLevel](logLevels/readme.md)
    * [kerenlLogLevel](logLevels/kerenlLogLevel.md)
    * [increase dmesgBuff size](logLevels/dmesgBuff.md)
-* [userSpaceLogger](userlog/readme.md)
+* [add userSpaceLogger](userlog/readme.md)
    * [report remote](userlog/rsyslogRemote.md)
-* [kernelPeriodocMsg](timers/periodicTimer.md)
-* []()
+* [add kernelPeriodocMsg](timers/periodicTimer.md)
+* [config watchdog]()
 * []()
 
-## kernelConf
+## change kernelConf
 * [kernel config for debug method](kerConf/readme.md)
 * [hakingMenu](kerConf/hakingMenu.md)
 * [timeKeeping](kerConf/timekeeping.md)

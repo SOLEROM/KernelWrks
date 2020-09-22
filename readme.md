@@ -1,6 +1,10 @@
 # Kernel-Wrks :: general kernel works
 
-* practice play and test kernel staff
+* practice play code and test kernel staff
+
+## defibrillator
+* project to move production system to monitor and debug bsp issues
+* see here [defibrillatorProject](defibrillator/readme.md) 
 
 ## makeFile Magic
 
