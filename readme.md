@@ -27,3 +27,6 @@
 ## tracing
 * [trace-cmd](traceShark/readme.md)
 	* [simple-1sec-rec](traceShark/example1.md)
+
+## boot
+* [params](paramTeler/readme.md)

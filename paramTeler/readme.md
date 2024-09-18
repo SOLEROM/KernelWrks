@@ -1,0 +1,2 @@
+# tell about boot params
+
