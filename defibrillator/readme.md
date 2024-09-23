@@ -32,7 +32,7 @@ A defibrillator is a device that gives a high energy electric shock to the heart
    * [report remote](userlog/rsyslogRemote.md)
 * [add kernelPeriodocMsg](timers/periodicTimer.md)
 * [config watchdog]()
-* []()
+* [dynamicDebig](./dynamicDebug/readme.md)
 
 ## change kernelConf
 * [kernel config for debug method](kerConf/readme.md)
